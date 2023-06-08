@@ -41,6 +41,26 @@ app.post('/guardar',  upload.single('foto'), async (req, res) => {
     res.redirect('/');
   });
 
+  app.post('/filtro', async (req, res) => {
+    try {
+      const nombre = req.body.nombre; // Obtener el valor del input desde la consulta GET
+  
+      let objetos;
+      if (nombre) {
+        objetos = await Contacto.find({ nombre: nombre });
+      } else {
+        objetos = await Contacto.find();
+      }
+  
+      res.render('nombre', { resultados: objetos });
+    } catch (error) {
+      console.error('Error al obtener los objetos de la base de datos:', error);
+      res.status(500).send('Error al obtener los objetos');
+    }
+  });
+  
+  
+
   app.get('/', async (req, res) => {
     try {
       const objetos = await Contacto.find();
